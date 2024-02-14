@@ -1,0 +1,67 @@
+ion-menu-button {
+  color: var(--ion-color-primary);
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  flex-wrap: wrap;
+  gap: 38px;
+
+  top: 16vh;
+  position: relative;
+}
+
+#container strong {
+  font-size: 32px;
+  line-height: 36px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+  color: #8c8c8c;
+  margin: 0;
+}
+
+#container a {
+  text-decoration: none;
+}
+
+ion-textarea.custom {
+  --background: var(--Text, #FFF);
+  --color: var(--Background, #2B2B2B);;
+  --padding-end: 10px;
+  --padding-start: 10px;
+  --placeholder-color: #ddd;
+  --placeholder-opacity: 0.8;
+  --border-radius: 40px;
+
+  width: 332px;
+  height: 46px;
+}
+
+
+.header{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.type{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+
+}
+
+ion-checkbox{
+  --border-color: #fff;
+  --border-width:2px;
+}
+
