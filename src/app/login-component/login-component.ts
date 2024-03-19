@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonHeader,
   IonToolbar,
@@ -11,6 +11,7 @@ import {
   IonButton,
   IonIcon,
   IonCheckbox,
+  NavController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline, personOutline } from 'ionicons/icons';
@@ -37,11 +38,15 @@ import { chevronBackOutline, personOutline } from 'ionicons/icons';
 export class LoginComponent implements OnInit {
   public folder!: string;
   private activatedRoute = inject(ActivatedRoute);
-  constructor() {
+  constructor(public router: Router) {
     addIcons({ personOutline, chevronBackOutline });
   }
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id') as string;
+  }
+
+  goToSignUp() {
+    this.router.navigateByUrl('cadastro');
   }
 }

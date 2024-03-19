@@ -1,0 +1,65 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-icon name="chevron-back-outline" size="large"></ion-icon>
+    </ion-buttons>
+    <ion-title>Tindoria</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="container">
+    <div class="header">
+      <strong class="capitalize">Cadastro</strong>
+      <span>Bem-vindo ao Tindoria.</span>
+    </div>
+
+    <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
+      <ion-textarea
+        label="Nome"
+        class="custom"
+        shape="round"
+        labelPlacement="floating"
+        fill="outline"
+        formControlName="name"
+        placeholder="Nome"
+      ></ion-textarea>
+
+      <ion-textarea
+        label="Digite um e-mail válido"
+        class="custom"
+        shape="round"
+        labelPlacement="floating"
+        fill="outline"
+        formControlName="email"
+        placeholder="Digite um e-mail válido"
+      ></ion-textarea>
+
+      <ion-textarea
+        label="Senha"
+        class="custom"
+        shape="round"
+        labelPlacement="floating"
+        fill="outline"
+        formControlName="password"
+        placeholder="Senha"
+      ></ion-textarea>
+
+      <ion-textarea
+        label="Confirme sua Senha"
+        class="custom"
+        shape="round"
+        labelPlacement="floating"
+        fill="outline"
+        formControlName="passwordConfirm"
+        placeholder="Confirme sua Senha"
+      ></ion-textarea>
+
+      <div class="type">
+        <ion-checkbox formControlName="student" (ionChange)="onCheckboxChange('student')">Aluno</ion-checkbox>
+        <ion-checkbox formControlName="teacher" (ionChange)="onCheckboxChange('teacher')">Tutor</ion-checkbox>
+      </div>
+    </form>
+    <ion-button shape="round" type="submit" (click)="signUp()">Cadastrar</ion-button>
+  </div>
+</ion-content>
