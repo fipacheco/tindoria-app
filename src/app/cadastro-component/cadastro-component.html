@@ -15,7 +15,8 @@
     </div>
 
     <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
-      <ion-textarea
+
+      <ion-input
         label="Nome"
         class="custom"
         shape="round"
@@ -23,43 +24,63 @@
         fill="outline"
         formControlName="name"
         placeholder="Nome"
-      ></ion-textarea>
+      ></ion-input>
 
-      <ion-textarea
+      <ion-input
         label="Digite um e-mail válido"
         class="custom"
         shape="round"
+        type="email"
         labelPlacement="floating"
         fill="outline"
         formControlName="email"
         placeholder="Digite um e-mail válido"
-      ></ion-textarea>
-
-      <ion-textarea
-        label="Senha"
+      ></ion-input>
+      
+      <ion-input
         class="custom"
         shape="round"
-        labelPlacement="floating"
         fill="outline"
+        type="password"
+        labelPlacement="floating"
+        label="Senha"
         formControlName="password"
         placeholder="Senha"
-      ></ion-textarea>
+      ></ion-input>
 
-      <ion-textarea
-        label="Confirme sua Senha"
+      <ion-input
         class="custom"
         shape="round"
         labelPlacement="floating"
+        label="Confirme sua Senha"
         fill="outline"
+        type="password"
         formControlName="passwordConfirm"
         placeholder="Confirme sua Senha"
-      ></ion-textarea>
+      ></ion-input>
 
       <div class="type">
-        <ion-checkbox formControlName="student" (ionChange)="onCheckboxChange('student')">Aluno</ion-checkbox>
-        <ion-checkbox formControlName="teacher" (ionChange)="onCheckboxChange('teacher')">Tutor</ion-checkbox>
+        <ion-checkbox
+          formControlName="student"
+          (ionChange)="onCheckboxChange('student')"
+          >Aluno</ion-checkbox
+        >
+        <ion-checkbox
+          formControlName="teacher"
+          (ionChange)="onCheckboxChange('teacher')"
+          >Tutor</ion-checkbox
+        >
       </div>
     </form>
-    <ion-button shape="round" type="submit" (click)="signUp()">Cadastrar</ion-button>
+    <ion-button shape="round" type="submit" (click)="signUp()" [disabled]="!enableButton"
+      >Cadastrar</ion-button
+    >
+
+    <ion-alert
+      [isOpen]="isAlertOpen"
+      [header]="title"
+      [message]="message"
+      [buttons]="alertButtons"
+    ></ion-alert>
   </div>
 </ion-content>

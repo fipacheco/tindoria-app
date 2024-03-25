@@ -1,6 +1,6 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   IonHeader,
@@ -13,6 +13,8 @@ import {
   IonButton,
   IonIcon,
   IonCheckbox,
+  IonAlert,
+  IonInput,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline, personOutline } from 'ionicons/icons';
@@ -36,7 +38,9 @@ import { chevronBackOutline, personOutline } from 'ionicons/icons';
     IonCheckbox,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    IonAlert,
+    IonInput
   ],
 })
 export class CadastroComponent implements OnInit {
@@ -44,6 +48,10 @@ export class CadastroComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   signUpForm: FormGroup;
   imageUrl: string = '';
+  alertButtons = ['Ok!'];
+  message: string = '';
+  title: string = '';
+  isAlertOpen = false;
 
   constructor(public formBuilder: FormBuilder, private http: HttpClient) {
     addIcons({ personOutline, chevronBackOutline });
@@ -55,18 +63,24 @@ export class CadastroComponent implements OnInit {
       passwordConfirm: ['', [Validators.required, Validators.minLength(6)]],
       student: [false, Validators.requiredTrue],
       teacher: [false, Validators.requiredTrue]
-    }, { validator: this.checkPasswords })
+    }, { validators: [this.confirmPasswordValidator('password', 'passwordConfirm'), this.checkCheckboxes] })
   }
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id') as string;
   }
 
-  private checkPasswords(group: FormGroup) {
-    let pass = group.get('password')?.value;
-    let confirmPass = group.get('confirmPassword')?.value;
-
-    return pass === confirmPass ? null : { notSame: true }
+  private confirmPasswordValidator(passwordControlName: string, confirmPasswordControlName: string) {
+    return (formGroup: FormGroup): { [key: string]: any } | null => {
+      const password = formGroup.get('password')?.value;
+      const confirmPassword = formGroup.get('passwordConfirm')?.value;
+      if (confirmPassword && password !== confirmPassword) {
+        formGroup.get('passwordConfirm')?.setErrors({ passwordMismatch: true });
+        return { passwordMismatch: true };
+      } else {
+        return null;
+      }
+    };
   }
 
   private checkCheckboxes(group: FormGroup) {
@@ -91,8 +105,12 @@ export class CadastroComponent implements OnInit {
   onCheckboxChange(checkbox: string) {
     if(checkbox === 'student') {
       this.signUpForm.get('teacher')?.setValue(false);
+      this.signUpForm.get('teacher')?.clearValidators();
+      this.signUpForm.get('teacher')?.updateValueAndValidity();
     } else {
       this.signUpForm.get('student')?.setValue(false);
+      this.signUpForm.get('student')?.clearValidators();
+      this.signUpForm.get('student')?.updateValueAndValidity();
     }
   }
 
@@ -104,17 +122,37 @@ export class CadastroComponent implements OnInit {
       password: this.signUpForm.value.password,
       imagemUrl: this.imageUrl
     };
-    console.log(payload)
+    console.log(this.signUpForm)
 
-    this.http.post('http://localhost:3000/alunos/cadastro', payload).subscribe({
-      next: (response) => {
-        console.log('Resposta do servidor:', response);
-        // Tratar a resposta conforme necessário
-      },
-      error: (error) => {
-        console.error('Erro na requisição:', error);
-        // Tratar erros conforme necessário
-      }
-    });
+    if(this.signUpForm.value.student) {
+      this.http.post('http://localhost:3000/alunos/cadastro', payload).subscribe({
+        next: (response) => {
+          this.message = (response as any).message;
+          this.title = 'Sucesso!'
+        },
+        error: (error) => {
+          this.message = 'Tente novamente';
+          this.title = 'Erro!'
+        }
+      });
+    } else {
+      this.http.post('http://localhost:3000/tutores/cadastro', payload).subscribe({
+        next: (response) => {
+          this.message = (response as any).message;
+          this.title = 'Sucesso!'
+        },
+        error: (error) => {
+          console.log(error)
+          this.message = 'Tente novamente';
+          this.title = error.error.error;
+        }
+      });
+    }
+
+    this.isAlertOpen = true;
+  }
+
+  get enableButton() {
+    return this.signUpForm.valid;
   }
 }
