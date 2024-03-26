@@ -15,6 +15,7 @@ import {
   IonCheckbox,
   IonAlert,
   IonInput,
+  AlertController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline, personOutline } from 'ionicons/icons';
@@ -48,12 +49,9 @@ export class CadastroComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   signUpForm: FormGroup;
   imageUrl: string = '';
-  alertButtons = ['Ok!'];
-  message: string = '';
-  title: string = '';
   isAlertOpen = false;
 
-  constructor(public formBuilder: FormBuilder, private http: HttpClient) {
+  constructor(public formBuilder: FormBuilder, private http: HttpClient, public alertController: AlertController) {
     addIcons({ personOutline, chevronBackOutline });
 
     this.signUpForm = this.formBuilder.group({
@@ -102,6 +100,24 @@ export class CadastroComponent implements OnInit {
     this.imageUrl = randonImages[randomIndex];
   }
 
+  async showAlert(title: string, message: string) {
+    const alert = await this.alertController.create({
+      header: title,
+      message: message,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.isAlertOpen = false;
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+    this.isAlertOpen = true;
+  }
+
   onCheckboxChange(checkbox: string) {
     if(checkbox === 'student') {
       this.signUpForm.get('teacher')?.setValue(false);
@@ -122,29 +138,32 @@ export class CadastroComponent implements OnInit {
       password: this.signUpForm.value.password,
       imagemUrl: this.imageUrl
     };
-    console.log(this.signUpForm)
 
     if(this.signUpForm.value.student) {
       this.http.post('http://localhost:3000/alunos/cadastro', payload).subscribe({
         next: (response) => {
-          this.message = (response as any).message;
-          this.title = 'Sucesso!'
+          const message = (response as any).message;
+          const title = 'Sucesso!';
+          this.showAlert(title, message);
         },
         error: (error) => {
-          this.message = 'Tente novamente';
-          this.title = 'Erro!'
+          const message = 'Tente novamente';
+          const title = error.error.error;
+          this.showAlert(title, message);
         }
       });
     } else {
       this.http.post('http://localhost:3000/tutores/cadastro', payload).subscribe({
         next: (response) => {
-          this.message = (response as any).message;
-          this.title = 'Sucesso!'
+          const message = (response as any).message;
+          const title = 'Sucesso!';
+          this.showAlert(title, message);
         },
         error: (error) => {
           console.log(error)
-          this.message = 'Tente novamente';
-          this.title = error.error.error;
+          const message = 'Tente novamente';
+          const title = error.error.error;
+          this.showAlert(title, message);
         }
       });
     }

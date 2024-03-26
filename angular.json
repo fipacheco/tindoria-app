@@ -76,6 +76,9 @@
             "production": {
               "buildTarget": "app:build:production"
             },
+            "options": {
+              "disableHostCheck": true
+            },
             "development": {
               "buildTarget": "app:build:development"
             },
