@@ -3,11 +3,11 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login/aluno',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
   {
-    path: 'login/aluno',
+    path: 'login',
     loadComponent: () =>
       import('./login-component/login-component').then((m) => m.LoginComponent),
   },
