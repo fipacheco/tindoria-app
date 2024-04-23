@@ -65,3 +65,9 @@ ion-checkbox{
   --border-width:2px;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+

@@ -1,8 +1,5 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-icon name="chevron-back-outline" size="large"></ion-icon>
-    </ion-buttons>
     <ion-title>Tindoria</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,28 +10,45 @@
       <strong class="capitalize">Login</strong>
       <span>Bem-vindo(a) de volta ao Tindoria.</span>
     </div>
-    <ion-textarea
-      label="Usuário"
-      class="custom"
-      shape="round"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Usuário"
-    ></ion-textarea>
-    <ion-textarea
-      label="Senha"
-      class="custom"
-      shape="round"
-      labelPlacement="floating"
-      fill="outline"
-      placeholder="Senha"
-    ></ion-textarea>
 
-    <div class="type">
-      <ion-checkbox>Aluno</ion-checkbox>
-      <ion-checkbox>Tutor</ion-checkbox>
-    </div>
-    <ion-button shape="round">Entrar</ion-button>
+    <form [formGroup]="signInForm" (ngSubmit)="signIn()">
+      <ion-input
+        label="Digite um e-mail válido"
+        class="custom"
+        shape="round"
+        type="email"
+        labelPlacement="floating"
+        fill="outline"
+        formControlName="email"
+        placeholder="Digite um e-mail válido"
+      ></ion-input>
+    
+      <ion-input
+        class="custom"
+        shape="round"
+        fill="outline"
+        type="password"
+        labelPlacement="floating"
+        label="Senha"
+        formControlName="password"
+        placeholder="Senha"
+      ></ion-input>
+      <div class="type">
+        <ion-checkbox
+            formControlName="student"
+            (ionChange)="onCheckboxChange('student')"
+            >Aluno</ion-checkbox
+          >
+          <ion-checkbox
+            formControlName="teacher"
+            (ionChange)="onCheckboxChange('teacher')"
+            >Tutor</ion-checkbox
+          >
+      </div>
+    
+    </form>
+
+    <ion-button shape="round" (click)="signIn()">Entrar</ion-button>
     <ion-button fill="clear" (click)="goToSignUp()">
       <ion-icon slot="start" name="person-outline"></ion-icon>
       Cadastre-se
