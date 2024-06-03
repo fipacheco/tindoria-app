@@ -142,4 +142,8 @@ export class LoginComponent implements OnInit {
   goToHome(id: string, status: string) {
     this.router.navigate(['/home', status, id]);
   }
+
+  get enableButton() {
+    return this.signInForm.valid;
+  }
 }
