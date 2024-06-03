@@ -1,0 +1,91 @@
+.user-infos {
+    display: flex;
+    flex-direction: column;
+    padding: 0 30px;
+    span {
+        font-size: 14px;
+    }
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+        margin-top: 40px;
+        margin-bottom: 10px;
+        justify-content: space-between;
+    
+        span {
+            font-size: 28px;
+            font-weight: 700;
+        }
+    }
+
+    .description {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+}
+
+.tab-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+    height: 58px;
+    
+    ion-button {
+      --background: transparent;
+      --box-shadow: none;
+      margin: 0 8px;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      color: #fff;
+      width: 100%;
+  
+      &.selected {
+        position: relative;
+        border-bottom: solid 2px #fff;
+      }
+  
+      &.selected::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 2px;
+      }
+
+      .button-native {
+        border: none;
+        box-shadow: none;
+      }
+    }
+}
+
+.student {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+ion-searchbar {
+  margin-top: 25px;
+  --border-radius: 20px;
+  --box-shadow: none;
+
+  ::ng-deep .searchbar-input-container {
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #a1daffd3;
+    box-shadow: none;
+  }
+
+  ::ng-deep .searchbar-input {
+    border-radius: 20px;
+    border: none;
+  } 
+}
+

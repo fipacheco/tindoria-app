@@ -114,9 +114,7 @@ export class LoginComponent implements OnInit {
     if(this.signInForm.value.student) {
       this.http.post('http://localhost:3000/alunos/login', payload).subscribe({
         next: (response) => {
-          const message = (response as any).message;
-          const title = 'Sucesso!';
-          this.showAlert(title, message);
+          this.goToHome((response as any).aluno.id, 'aluno');
         },
         error: (error) => {
           const message = 'Tente novamente';
@@ -127,9 +125,7 @@ export class LoginComponent implements OnInit {
     } else {
       this.http.post('http://localhost:3000/tutores/login', payload).subscribe({
         next: (response) => {
-          const message = (response as any).message;
-          const title = 'Sucesso!';
-          this.showAlert(title, message);
+          this.goToHome((response as any).tutor.id, 'tutor');
         },
         error: (error) => {
           console.log(error)
@@ -141,5 +137,9 @@ export class LoginComponent implements OnInit {
     }
 
     this.isAlertOpen = true;
+  }
+
+  goToHome(id: string, status: string) {
+    this.router.navigate(['/home', status, id]);
   }
 }
