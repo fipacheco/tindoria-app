@@ -25,8 +25,17 @@ export class HomeComponent  implements OnInit {
   filteredMaterias: any = [];
   filteredTutors: any = [];
   user: any;
-  selectedTab: string = 'Materias';
-  status: string | null = null
+  selectedTab: string = 'subjects';
+  status: string | null = null;
+  avatars = [
+    'assets/images/av1.png',
+    'assets/images/av2.png',
+    'assets/images/av3.png',
+    'assets/images/av4.png',
+    'assets/images/av5.png',
+    'assets/images/av6.png',
+    'assets/images/av7.png'
+  ];
 
   constructor(private route: ActivatedRoute, private http: HttpClient, public router: Router) {
     addIcons({ personOutline, chevronBackOutline });
@@ -88,11 +97,14 @@ export class HomeComponent  implements OnInit {
       response => {
         const tutores = response.tutors;
         if (Array.isArray(tutores)) {
-          this.tutoresOriginais = tutores.map(tutor => ({
-            id: tutor.id,
-            name: tutor.name,
-            imagem: '/assets/images/av1.png'
-          }));
+          this.tutoresOriginais = tutores.map(tutor =>{
+            const randomIndex = Math.floor(Math.random() * this.avatars.length);
+            return ({
+              id: tutor.id,
+              name: tutor.name,
+              imagem: this.avatars[randomIndex]
+            })
+          });
           this.filteredTutors = [...this.tutoresOriginais];
         } else {
           console.error('Erro ao carregar tutores: "tutors" não é um array', tutores);

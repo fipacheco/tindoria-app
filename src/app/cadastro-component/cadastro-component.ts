@@ -1,7 +1,7 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonHeader,
   IonToolbar,
@@ -51,7 +51,7 @@ export class CadastroComponent implements OnInit {
   imageUrl: string = '';
   isAlertOpen = false;
 
-  constructor(public formBuilder: FormBuilder, private http: HttpClient, public alertController: AlertController) {
+  constructor(public formBuilder: FormBuilder, private http: HttpClient, public alertController: AlertController, public router: Router) {
     addIcons({ personOutline, chevronBackOutline });
 
     this.signUpForm = this.formBuilder.group({
@@ -109,6 +109,7 @@ export class CadastroComponent implements OnInit {
           text: 'OK',
           handler: () => {
             this.isAlertOpen = false;
+            this.goToLogin();
           }
         }
       ]
@@ -169,6 +170,10 @@ export class CadastroComponent implements OnInit {
     }
 
     this.isAlertOpen = true;
+  }
+
+  goToLogin(){
+    this.router.navigate(['/']);
   }
 
   get enableButton() {

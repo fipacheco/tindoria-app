@@ -1,8 +1,8 @@
 <div class="container">
   <ion-card *ngFor="let tutor of tutors">
-    <img [alt]="tutor.name" [src]="tutor.imagem" />
+    <img [alt]="tutor?.name" [src]="tutor?.imagem" />
     <ion-card-header>
-      <ion-card-title>{{tutor.name}}</ion-card-title>
+      <ion-card-title>{{tutor?.name}}</ion-card-title>
       <ion-card-subtitle>
         <ion-button shape="round" fill="outline">Chat</ion-button>
       </ion-card-subtitle>

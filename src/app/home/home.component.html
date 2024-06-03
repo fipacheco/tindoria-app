@@ -15,11 +15,7 @@
         </ion-button>
       </div>
       
-      <span *ngIf="status==='aluno'">{{user?.semestre ? user?.semestre : 'Nao informado'}}</span>
-
-      <div class="description" *ngIf="status==='tutor'">
-        <span *ngFor="let subject of materiasOriginais">{{subject.name}}</span>
-      </div>
+      <span *ngIf="status==='aluno'">{{user?.semestre ? 'Semestre ' + user?.semestre : 'Nao informado'}}</span>
     </div>
     
     <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterMaterias($event)" placeholder="Pesquisar materia/tutor"></ion-searchbar>
