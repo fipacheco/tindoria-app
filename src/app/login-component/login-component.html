@@ -48,7 +48,7 @@
     
     </form>
 
-    <ion-button shape="round" (click)="signIn()">Entrar</ion-button>
+    <ion-button shape="round" (click)="signIn()" [disabled]="!enableButton">Entrar</ion-button>
     <ion-button fill="clear" (click)="goToSignUp()">
       <ion-icon slot="start" name="person-outline"></ion-icon>
       Cadastre-se

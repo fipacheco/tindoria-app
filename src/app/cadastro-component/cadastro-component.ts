@@ -1,7 +1,7 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   IonHeader,
   IonToolbar,
@@ -19,6 +19,7 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline, personOutline } from 'ionicons/icons';
+import { ApiService } from '../service/api.service';
 
 @Component({
   selector: 'cadastro',
@@ -26,6 +27,7 @@ import { chevronBackOutline, personOutline } from 'ionicons/icons';
   styleUrls: ['./cadastro-component.scss'],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
+  providers: [ApiService],
   imports: [
     IonHeader,
     IonToolbar,
@@ -51,7 +53,7 @@ export class CadastroComponent implements OnInit {
   imageUrl: string = '';
   isAlertOpen = false;
 
-  constructor(public formBuilder: FormBuilder, private http: HttpClient, public alertController: AlertController) {
+  constructor(public formBuilder: FormBuilder, public alertController: AlertController, public router: Router, private apiService: ApiService) {
     addIcons({ personOutline, chevronBackOutline });
 
     this.signUpForm = this.formBuilder.group({
@@ -109,6 +111,7 @@ export class CadastroComponent implements OnInit {
           text: 'OK',
           handler: () => {
             this.isAlertOpen = false;
+            this.goToLogin();
           }
         }
       ]
@@ -140,7 +143,7 @@ export class CadastroComponent implements OnInit {
     };
 
     if(this.signUpForm.value.student) {
-      this.http.post('http://localhost:3000/alunos/cadastro', payload).subscribe({
+      this.apiService.cadastrarAluno(this.signUpForm.value.name, this.signUpForm.value.email, this.signUpForm.value.password).subscribe({
         next: (response) => {
           const message = (response as any).message;
           const title = 'Sucesso!';
@@ -153,7 +156,7 @@ export class CadastroComponent implements OnInit {
         }
       });
     } else {
-      this.http.post('http://localhost:3000/tutores/cadastro', payload).subscribe({
+      this.apiService.cadastrarTutor(this.signUpForm.value.name, this.signUpForm.value.email, this.signUpForm.value.password).subscribe({
         next: (response) => {
           const message = (response as any).message;
           const title = 'Sucesso!';
@@ -169,6 +172,10 @@ export class CadastroComponent implements OnInit {
     }
 
     this.isAlertOpen = true;
+  }
+
+  goToLogin(){
+    this.router.navigate(['/']);
   }
 
   get enableButton() {

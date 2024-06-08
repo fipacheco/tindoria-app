@@ -1,4 +1,3 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,12 +12,13 @@ import {
   IonButton,
   IonIcon,
   IonCheckbox,
-  NavController,
   IonInput,
   AlertController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline, personOutline } from 'ionicons/icons';
+import { ApiService } from '../service/api.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'login',
@@ -26,6 +26,7 @@ import { chevronBackOutline, personOutline } from 'ionicons/icons';
   styleUrls: ['./login-component.scss'],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
+  providers: [ApiService],
   imports: [
     IonHeader,
     IonToolbar,
@@ -49,7 +50,7 @@ export class LoginComponent implements OnInit {
   signInForm: FormGroup;
   isAlertOpen = false;
   
-  constructor(public router: Router, public formBuilder: FormBuilder, public alertController: AlertController, private http: HttpClient) {
+  constructor(public router: Router, public formBuilder: FormBuilder, public alertController: AlertController, private apiService: ApiService) {
     addIcons({ personOutline, chevronBackOutline });
 
     this.signInForm = this.formBuilder.group({
@@ -112,11 +113,9 @@ export class LoginComponent implements OnInit {
     };
 
     if(this.signInForm.value.student) {
-      this.http.post('http://localhost:3000/alunos/login', payload).subscribe({
+      this.apiService.loginAluno(this.signInForm.value.email, this.signInForm.value.pas).subscribe({
         next: (response) => {
-          const message = (response as any).message;
-          const title = 'Sucesso!';
-          this.showAlert(title, message);
+          this.goToHome((response as any).aluno.id, 'aluno');
         },
         error: (error) => {
           const message = 'Tente novamente';
@@ -125,11 +124,9 @@ export class LoginComponent implements OnInit {
         }
       });
     } else {
-      this.http.post('http://localhost:3000/tutores/login', payload).subscribe({
+      this.apiService.loginTutor(this.signInForm.value.email, this.signInForm.value.password).subscribe({
         next: (response) => {
-          const message = (response as any).message;
-          const title = 'Sucesso!';
-          this.showAlert(title, message);
+          this.goToHome((response as any).tutor.id, 'tutor');
         },
         error: (error) => {
           console.log(error)
@@ -141,5 +138,13 @@ export class LoginComponent implements OnInit {
     }
 
     this.isAlertOpen = true;
+  }
+
+  goToHome(id: string, status: string) {
+    this.router.navigate(['/home', status, id]);
+  }
+
+  get enableButton() {
+    return this.signInForm.valid;
   }
 }

@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title slot="start">Tindoria</ion-title>
+    <ion-button slot="end" fill="clear" (click)="logOut()">Sair</ion-button>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="body">
+    <div class="user-infos">
+      <div class="header">
+        <span>Ola, {{user?.name}}</span>
+        <ion-button shape="round" (click)="goToProfile(user.id, 'aluno')">
+          <ion-icon slot="start" name="person-outline"></ion-icon>
+            Perfil
+        </ion-button>
+      </div>
+      
+      <span *ngIf="status==='aluno'">{{user?.semestre ? 'Semestre ' + user?.semestre : 'Nao informado'}}</span>
+    </div>
+    
+    <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterMaterias($event)" placeholder="Pesquisar materia/tutor"></ion-searchbar>
+  
+    <div class="tab-buttons">
+      <ion-button 
+        (click)="selectTab('subjects')" 
+        [class.selected]="selectedTab === 'subjects'">
+        Materias
+      </ion-button>
+  
+      <ion-button *ngIf="status==='aluno'"
+        (click)="selectTab('tutors')" 
+        [class.selected]="selectedTab === 'tutors'">
+        Tutores
+      </ion-button>
+  
+      <ion-button *ngIf="status==='tutor'"
+        (click)="selectTab('students')" 
+        [class.selected]="selectedTab === 'students'">
+        Alunos
+      </ion-button>
+    </div>
+    <div *ngIf="selectedTab === 'subjects'">
+      <subjects [subjects]="filteredMaterias"></subjects>
+    </div>
+    <div *ngIf="selectedTab === 'tutors'">
+      <tutors [tutors]="filteredTutors"></tutors>
+    </div>
+    <div *ngIf="selectedTab === 'students'" class="student">
+      <span>Sem alunos</span>
+    </div>
+  </div>
+</ion-content>
+
