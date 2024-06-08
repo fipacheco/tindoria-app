@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonButtons, IonButton, IonIcon, IonSearchbar, IonTabs, IonTabBar, IonTabButton, IonLabel, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
@@ -18,7 +18,7 @@ import { ApiService } from '../service/api.service';
     styleUrls: ['./home.component.scss'],
     imports: [IonContent, IonTitle, IonToolbar, IonHeader, IonLabel, IonTabButton, IonTabBar, IonTabs, CommonModule, IonButton, IonButtons, IonIcon, IonSearchbar, HttpClientModule, FormsModule, SubjectsComponent, TutorsComponent]
 })
-export class HomeComponent  implements OnInit {
+export class HomeComponent  implements OnInit, OnChanges {
   materiasOriginais: any = [];
   tutoresOriginais: any = [];
   materias: any = [];
@@ -43,6 +43,10 @@ export class HomeComponent  implements OnInit {
     addIcons({ personOutline, chevronBackOutline });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes) 
+  }
+
   ngOnInit() {
     let id = localStorage.getItem('userId');
     this.status = localStorage.getItem('status');
@@ -55,30 +59,10 @@ export class HomeComponent  implements OnInit {
           localStorage.setItem('status', this.status);
         }
       });
-    }
-    if(this.status === 'aluno') {
-      if(id) {
-        this.apiService.getAlunoById(id).subscribe(response => {
-          this.user = response.aluno;
-        })
-      }
-      
-      this.carregarMaterias();
-      this.carregarTutores();
     } else {
-      if(id) {
-        this.apiService.getTutorById(id).subscribe(response => {
-          this.user = response.tutor;
-          this.materiasOriginais = response.tutor.subjectsData?.map((materia: { id: any; name: any; route: any; }) => ({
-            id: materia.id,
-            name: materia.name,
-            imagem: materia.route,
-            
-          }));
-          this.filteredMaterias = [...this.materiasOriginais];
-        })
-      }
+      if(this.status) this.loadUser(id, this.status)
     }
+    
   }
 
   carregarMaterias() {
@@ -152,6 +136,32 @@ export class HomeComponent  implements OnInit {
 
   goToProfile(id: string, status: string) {
     this.router.navigate(['/profile', status, id]);
+  }
+
+  loadUser(id: string, status: string){
+    if(this.status === 'aluno') {
+      if(id) {
+        this.apiService.getAlunoById(id).subscribe(response => {
+          this.user = response.aluno;
+        })
+      }
+      
+      this.carregarMaterias();
+      this.carregarTutores();
+    } else {
+      if(id) {
+        this.apiService.getTutorById(id).subscribe(response => {
+          this.user = response.tutor;
+          this.materiasOriginais = response.tutor.subjectsData?.map((materia: { id: any; name: any; route: any; }) => ({
+            id: materia.id,
+            name: materia.name,
+            imagem: materia.route,
+            
+          }));
+          this.filteredMaterias = [...this.materiasOriginais];
+        })
+      }
+    }
   }
 
 }
