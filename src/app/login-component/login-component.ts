@@ -113,7 +113,7 @@ export class LoginComponent implements OnInit {
     };
 
     if(this.signInForm.value.student) {
-      this.apiService.loginAluno(this.signInForm.value.email, this.signInForm.value.pas).subscribe({
+      this.apiService.loginAluno(this.signInForm.value.email, this.signInForm.value.password).subscribe({
         next: (response) => {
           this.goToHome((response as any).aluno.id, 'aluno');
         },
