@@ -100,6 +100,7 @@ export class ConfigUserComponent  implements OnInit, OnChanges {
         linkYoutube: this.editUserForm.get('youtube')?.value,
         linkTwitter: this.editUserForm.get('twitter')?.value,
         linkInstagram: this.editUserForm.get('instagram')?.value,
+        subjects: this.user.subjects
       }
       this.tutorPatch(data)
     }
