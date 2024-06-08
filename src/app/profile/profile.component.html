@@ -21,11 +21,21 @@
       <div class="links-container" *ngIf="status==='tutor'">
         <span class="title">Links</span>
         <div class="links">
-          <ion-icon name="globe-outline"></ion-icon>
-          <ion-icon name="logo-discord"></ion-icon>
-          <ion-icon name="logo-youtube"></ion-icon>
-          <ion-icon name="logo-twitter"></ion-icon>
-          <ion-icon name="logo-instagram"></ion-icon>
+          <a [href]="user?.linkUrl" target="_blank">
+            <ion-icon name="globe-outline"></ion-icon>
+          </a>
+          <a [href]="user?.linkDiscord" target="_blank">
+            <ion-icon name="logo-discord"></ion-icon>
+          </a>
+          <a [href]="user?.linkYoutube" target="_blank">
+            <ion-icon name="logo-youtube"></ion-icon>
+          </a>
+          <a [href]="user?.linkTwitter" target="_blank">
+            <ion-icon name="logo-twitter"></ion-icon>
+          </a>
+          <a [href]="user?.linkInstagra" target="_blank">
+            <ion-icon name="logo-instagram"></ion-icon>
+          </a>
         </div>
       </div>
 
