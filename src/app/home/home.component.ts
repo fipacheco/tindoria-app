@@ -60,7 +60,7 @@ export class HomeComponent  implements OnInit, OnChanges {
         }
       });
     } else {
-      if(this.status) this.loadUser(id, this.status)
+      if(this.status && id) this.loadUser(id, this.status)
     }
     
   }
@@ -139,7 +139,7 @@ export class HomeComponent  implements OnInit, OnChanges {
   }
 
   loadUser(id: string, status: string){
-    if(this.status === 'aluno') {
+    if(status === 'aluno') {
       if(id) {
         this.apiService.getAlunoById(id).subscribe(response => {
           this.user = response.aluno;
