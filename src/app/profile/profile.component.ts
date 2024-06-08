@@ -126,7 +126,6 @@ export class ProfileComponent  implements OnInit {
     } else {
       this.apiService.getTutorById(id).subscribe(response => {
         this.user = response.tutor;
-        console.log(this.user)
         this.materiasOriginais = response.tutor.subjectsData?.map((materia: { id: any; name: any; route: any; }) => ({
           id: materia.id,
           name: materia.name,

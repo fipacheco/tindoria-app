@@ -55,8 +55,8 @@ export class ConfigUserComponent  implements OnInit, OnChanges {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    const url = `http://localhost:3000/alunos/${this.user.id}`;
-    this.apiService.updateAluno(this.user.id, value ).subscribe({
+    const url = `http://localhost:3000/alunos/${this.user?.id}`;
+    this.apiService.updateAluno(this.user?.id, value ).subscribe({
       next: (result) => {
         this.showAlert('Parabens', (result as any).message);
       },
@@ -70,8 +70,8 @@ export class ConfigUserComponent  implements OnInit, OnChanges {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    const url = `http://localhost:3000/tutores/${this.user.id}`;
-    this.apiService.updateTutor(this.user.id, value).subscribe({
+    const url = `http://localhost:3000/tutores/${this.user?.id}`;
+    this.apiService.updateTutor(this.user?.id, value).subscribe({
       next: (result) => {
         this.showAlert('Parabens', (result as any).message);
       },

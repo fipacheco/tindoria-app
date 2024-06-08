@@ -57,14 +57,14 @@ export class HomeComponent  implements OnInit {
       });
     }
     if(this.status === 'aluno') {
-      this.apiService.getAlunoById(this.user.id).subscribe(response => {
+      this.apiService.getAlunoById(this.user?.id).subscribe(response => {
         this.user = response.aluno;
       })
       
       this.carregarMaterias();
       this.carregarTutores();
     } else {
-      this.apiService.getTutorById(this.user.id).subscribe(response => {
+      this.apiService.getTutorById(this.user?.id).subscribe(response => {
         this.user = response.tutor;
         this.materiasOriginais = response.tutor.subjectsData?.map((materia: { id: any; name: any; route: any; }) => ({
           id: materia.id,
