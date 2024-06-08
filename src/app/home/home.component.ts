@@ -8,11 +8,13 @@ import { addIcons } from 'ionicons';
 import { chevronBackOutline, personOutline } from 'ionicons/icons';
 import { SubjectsComponent } from "../subjects/subjects.component";
 import { TutorsComponent } from "../tutors/tutors.component";
+import { ApiService } from '../service/api.service';
 
 @Component({
     selector: 'app-home',
     standalone: true,
     templateUrl: './home.component.html',
+    providers: [ApiService],
     styleUrls: ['./home.component.scss'],
     imports: [IonContent, IonTitle, IonToolbar, IonHeader, IonLabel, IonTabButton, IonTabBar, IonTabs, CommonModule, IonButton, IonButtons, IonIcon, IonSearchbar, HttpClientModule, FormsModule, SubjectsComponent, TutorsComponent]
 })
@@ -37,7 +39,7 @@ export class HomeComponent  implements OnInit {
     'assets/images/av7.png'
   ];
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, public router: Router) {
+  constructor(private route: ActivatedRoute, public router: Router, private apiService: ApiService) {
     addIcons({ personOutline, chevronBackOutline });
   }
 
@@ -55,14 +57,14 @@ export class HomeComponent  implements OnInit {
       });
     }
     if(this.status === 'aluno') {
-      this.http.get<any>(`http://localhost:3000/alunos/${id}`).subscribe(response => {
+      this.apiService.getAlunoById(this.user.id).subscribe(response => {
         this.user = response.aluno;
       })
       
       this.carregarMaterias();
       this.carregarTutores();
     } else {
-      this.http.get<any>(`http://localhost:3000/tutores/${id}`).subscribe(response => {
+      this.apiService.getTutorById(this.user.id).subscribe(response => {
         this.user = response.tutor;
         this.materiasOriginais = response.tutor.subjectsData?.map((materia: { id: any; name: any; route: any; }) => ({
           id: materia.id,
@@ -76,9 +78,9 @@ export class HomeComponent  implements OnInit {
   }
 
   carregarMaterias() {
-    this.http.get<any[]>('http://localhost:3000/materias').subscribe(
+    this.apiService.getMaterias().subscribe(
       materias => {
-        this.materiasOriginais = materias.map(materia => ({
+        this.materiasOriginais = materias.map((materia: { id: any; name: any; route: any; }) => ({
           id: materia.id,
           name: materia.name,
           imagem: materia.route
@@ -93,7 +95,7 @@ export class HomeComponent  implements OnInit {
   }
 
   carregarTutores() {
-    this.http.get<any>('http://localhost:3000/tutores').subscribe(
+    this.apiService.getTutores().subscribe(
       response => {
         const tutores = response.tutors;
         if (Array.isArray(tutores)) {
@@ -142,6 +144,10 @@ export class HomeComponent  implements OnInit {
     localStorage.removeItem('userId');
     localStorage.removeItem('status');
     this.router.navigate(['/']);
+  }
+
+  goToProfile(id: string, status: string) {
+    this.router.navigate(['/profile', status, id]);
   }
 
 }

@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title slot="start">Tindoria</ion-title>
+    <ion-button slot="end" fill="clear" (click)="back()">Voltar</ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-img src="assets/images/cover.png"></ion-img>
+    <ion-card-header *ngIf="!showEdit">
+      <ion-card-title>{{user?.name}}</ion-card-title>
+      <ion-card-subtitle *ngIf="status==='aluno'">Semestre {{user?.semestre}}</ion-card-subtitle>
+    </ion-card-header>
+    <img class="avatar" src="assets/images/av7.png" alt="Avatar">
+    <ion-card-content *ngIf="!showEdit">
+      <div class="bio">
+        <span class="title">Bio</span>
+        <span class="content">{{user?.bio}}</span>
+      </div>
+      <div class="links-container" *ngIf="status==='tutor'">
+        <span class="title">Links</span>
+        <div class="links">
+          <ion-icon name="globe-outline"></ion-icon>
+          <ion-icon name="logo-discord"></ion-icon>
+          <ion-icon name="logo-youtube"></ion-icon>
+          <ion-icon name="logo-twitter"></ion-icon>
+          <ion-icon name="logo-instagram"></ion-icon>
+        </div>
+      </div>
+
+      <div class="button">
+        <ion-button shape="round" (click)="editProfile()">Editar perfil</ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <config-user [ngClass]="{'tutor': status==='tutor', 'aluno': status==='aluno'}" [user]="user" [status]="status" *ngIf="showEdit" (update)="closeEdit($event)"></config-user>
+
+  <div class="tab-buttons" *ngIf="status==='tutor' && !showEdit">
+    <ion-button 
+      (click)="selectTab('subjects')" 
+      [class.selected]="selectedTab === 'subjects'">
+      Materias
+    </ion-button>
+
+    <ion-button
+      (click)="selectTab('notas')" 
+      [class.selected]="selectedTab === 'notas'">
+      Notas e certificados
+    </ion-button>
+  </div>
+  <div *ngIf="selectedTab === 'subjects' && status==='tutor' && !showEdit">
+    <subjects [subjects]="filteredMaterias"></subjects>
+  </div>
+</ion-content>
+

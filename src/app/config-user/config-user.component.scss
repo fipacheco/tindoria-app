@@ -1,0 +1,26 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 74%;
+    padding: 20px;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+
+    ion-button {
+        width: 303px;
+        height: 54px;
+
+    }
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}

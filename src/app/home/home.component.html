@@ -9,7 +9,7 @@
     <div class="user-infos">
       <div class="header">
         <span>Ola, {{user?.name}}</span>
-        <ion-button shape="round">
+        <ion-button shape="round" (click)="goToProfile(user.id, 'aluno')">
           <ion-icon slot="start" name="person-outline"></ion-icon>
             Perfil
         </ion-button>

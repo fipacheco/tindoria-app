@@ -19,6 +19,7 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline, personOutline } from 'ionicons/icons';
+import { ApiService } from '../service/api.service';
 
 @Component({
   selector: 'cadastro',
@@ -26,6 +27,7 @@ import { chevronBackOutline, personOutline } from 'ionicons/icons';
   styleUrls: ['./cadastro-component.scss'],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
+  providers: [ApiService],
   imports: [
     IonHeader,
     IonToolbar,
@@ -51,7 +53,7 @@ export class CadastroComponent implements OnInit {
   imageUrl: string = '';
   isAlertOpen = false;
 
-  constructor(public formBuilder: FormBuilder, private http: HttpClient, public alertController: AlertController, public router: Router) {
+  constructor(public formBuilder: FormBuilder, public alertController: AlertController, public router: Router, private apiService: ApiService) {
     addIcons({ personOutline, chevronBackOutline });
 
     this.signUpForm = this.formBuilder.group({
@@ -141,7 +143,7 @@ export class CadastroComponent implements OnInit {
     };
 
     if(this.signUpForm.value.student) {
-      this.http.post('http://localhost:3000/alunos/cadastro', payload).subscribe({
+      this.apiService.cadastrarAluno(this.signUpForm.value.name, this.signUpForm.value.email, this.signUpForm.value.password).subscribe({
         next: (response) => {
           const message = (response as any).message;
           const title = 'Sucesso!';
@@ -154,7 +156,7 @@ export class CadastroComponent implements OnInit {
         }
       });
     } else {
-      this.http.post('http://localhost:3000/tutores/cadastro', payload).subscribe({
+      this.apiService.cadastrarTutor(this.signUpForm.value.name, this.signUpForm.value.email, this.signUpForm.value.password).subscribe({
         next: (response) => {
           const message = (response as any).message;
           const title = 'Sucesso!';

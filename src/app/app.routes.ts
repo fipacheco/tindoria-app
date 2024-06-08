@@ -26,4 +26,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./subject/subject.component').then((m) => m.SubjectComponent),
   },
+  {
+    path: 'profile/:status/:id',
+    loadComponent: () =>
+      import('./profile/profile.component').then((m) => m.ProfileComponent),
+  },
 ];

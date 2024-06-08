@@ -1,0 +1,84 @@
+<form [formGroup]="editUserForm" (ngSubmit)="updateUser()">
+  <ion-input
+    label="Nome"
+    class="custom"
+    shape="round"
+    labelPlacement="floating"
+    fill="outline"
+    formControlName="name"
+    placeholder="Nome"
+  ></ion-input>
+
+  <ion-input
+    class="custom"
+    shape="round"
+    fill="outline"
+    type="number"
+    labelPlacement="floating"
+    label="Semestre"
+    formControlName="semester"
+    placeholder="1"
+  ></ion-input>
+
+  <ion-input
+    class="custom"
+    shape="round"
+    fill="outline"
+    labelPlacement="floating"
+    label="Bio"
+    formControlName="bio"
+    placeholder="Uma biografia bonita"
+  ></ion-input>
+
+  <div *ngIf="status==='tutor'" class="links">
+    <ion-input
+    class="custom"
+    shape="round"
+    fill="outline"
+    labelPlacement="floating"
+    label="URL"
+    formControlName="url"
+    placeholder="www.seusite.com"
+  ></ion-input>
+  <ion-input
+    class="custom"
+    shape="round"
+    fill="outline"
+    labelPlacement="floating"
+    label="Discord"
+    formControlName="discord"
+    placeholder="@nickname"
+  ></ion-input>
+  <ion-input
+    class="custom"
+    shape="round"
+    fill="outline"
+    labelPlacement="floating"
+    label="Youtube"
+    formControlName="youtube"
+    placeholder="youtube/seucanal"
+  ></ion-input>
+  <ion-input
+    class="custom"
+    shape="round"
+    fill="outline"
+    labelPlacement="floating"
+    label="Twitter"
+    formControlName="twitter"
+    placeholder="@nickname"
+  ></ion-input>
+  <ion-input
+    class="custom"
+    shape="round"
+    fill="outline"
+    labelPlacement="floating"
+    label="Instagram"
+    formControlName="instagram"
+    placeholder="@nickname"
+  ></ion-input>
+  </div>
+</form>
+
+<div class="button">
+  <ion-button shape="round" (click)="updateUser()">Salvar</ion-button>
+</div>
