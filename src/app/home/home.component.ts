@@ -57,23 +57,27 @@ export class HomeComponent  implements OnInit {
       });
     }
     if(this.status === 'aluno') {
-      this.apiService.getAlunoById(this.user?.id).subscribe(response => {
-        this.user = response.aluno;
-      })
+      if(id) {
+        this.apiService.getAlunoById(id).subscribe(response => {
+          this.user = response.aluno;
+        })
+      }
       
       this.carregarMaterias();
       this.carregarTutores();
     } else {
-      this.apiService.getTutorById(this.user?.id).subscribe(response => {
-        this.user = response.tutor;
-        this.materiasOriginais = response.tutor.subjectsData?.map((materia: { id: any; name: any; route: any; }) => ({
-          id: materia.id,
-          name: materia.name,
-          imagem: materia.route,
-          
-        }));
-        this.filteredMaterias = [...this.materiasOriginais];
-      })
+      if(id) {
+        this.apiService.getTutorById(id).subscribe(response => {
+          this.user = response.tutor;
+          this.materiasOriginais = response.tutor.subjectsData?.map((materia: { id: any; name: any; route: any; }) => ({
+            id: materia.id,
+            name: materia.name,
+            imagem: materia.route,
+            
+          }));
+          this.filteredMaterias = [...this.materiasOriginais];
+        })
+      }
     }
   }
 
