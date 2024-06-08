@@ -44,7 +44,7 @@ export class HomeComponent  implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes) 
+    console.log(changes)
   }
 
   ngOnInit() {
@@ -59,10 +59,30 @@ export class HomeComponent  implements OnInit, OnChanges {
           localStorage.setItem('status', this.status);
         }
       });
-    } else {
-      if(this.status && id) this.loadUser(id, this.status)
     }
-    
+    if(this.status === 'aluno') {
+      if(id) {
+        this.apiService.getAlunoById(id).subscribe(response => {
+          this.user = response.aluno;
+        })
+      }
+      
+      this.carregarMaterias();
+      this.carregarTutores();
+    } else {
+      if(id) {
+        this.apiService.getTutorById(id).subscribe(response => {
+          this.user = response.tutor;
+          this.materiasOriginais = response.tutor.subjectsData?.map((materia: { id: any; name: any; route: any; }) => ({
+            id: materia.id,
+            name: materia.name,
+            imagem: materia.route,
+            
+          }));
+          this.filteredMaterias = [...this.materiasOriginais];
+        })
+      }
+    }
   }
 
   carregarMaterias() {
@@ -139,28 +159,8 @@ export class HomeComponent  implements OnInit, OnChanges {
   }
 
   loadUser(id: string, status: string){
-    if(status === 'aluno') {
-      if(id) {
-        this.apiService.getAlunoById(id).subscribe(response => {
-          this.user = response.aluno;
-        })
-      }
+    if(status==='aluno') {
       
-      this.carregarMaterias();
-      this.carregarTutores();
-    } else {
-      if(id) {
-        this.apiService.getTutorById(id).subscribe(response => {
-          this.user = response.tutor;
-          this.materiasOriginais = response.tutor.subjectsData?.map((materia: { id: any; name: any; route: any; }) => ({
-            id: materia.id,
-            name: materia.name,
-            imagem: materia.route,
-            
-          }));
-          this.filteredMaterias = [...this.materiasOriginais];
-        })
-      }
     }
   }
 
